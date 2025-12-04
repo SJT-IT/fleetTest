@@ -1,0 +1,1 @@
+hey chat; I am creating an application and below is the structure we will go one by one; though step 0 is creating the flutter project (for android currently with vs code and physical android phone) and setup a firebase; I have git and github as well but it needs to be set up (ssh is setup but not the actual project)
