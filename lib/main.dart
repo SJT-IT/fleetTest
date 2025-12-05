@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:test_case/features/auth/presentation/home.dart';
 import 'package:test_case/features/auth/presentation/login.dart';
+import 'package:test_case/features/auth/presentation/profile.dart';
 import 'package:test_case/features/auth/presentation/signup.dart';
 
 void main() async {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpScreen(),
         '/home': (context) => const HomePage(),
+        '/profile': (context) => const ProfilePage(),
       },
     );
   }

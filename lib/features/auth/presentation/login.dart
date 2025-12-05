@@ -22,9 +22,14 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text.trim(),
       );
 
-      // Only navigate if widget is still mounted
       if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/home');
+
+      // Clear stack and go to home
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+        (route) => false, // remove all previous routes
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(

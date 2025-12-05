@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       // Only navigate if widget is still mounted
       if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(
