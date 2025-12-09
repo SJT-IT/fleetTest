@@ -1,18 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart'; // <-- added
 import 'package:test_case/features/auth/presentation/home.dart';
 import 'package:test_case/features/auth/presentation/login.dart';
 import 'package:test_case/features/auth/presentation/profile.dart';
 import 'package:test_case/features/auth/presentation/signup.dart';
 
+// ----------------------
+// THEME PROVIDER
+// ----------------------
+class ThemeProvider extends ChangeNotifier {
+  bool _isDarkMode = true;
+
+  bool get isDarkMode => _isDarkMode;
+
+  ThemeMode get themeMode => _isDarkMode ? ThemeMode.dark : ThemeMode.light;
+
+  void toggleTheme() {
+    _isDarkMode = !_isDarkMode;
+    notifyListeners();
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(), // <-- added
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,11 +40,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context); // <-- added
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
+      // ----------------------
+      // DARK MODE ENABLED HERE
+      // ----------------------
+      themeMode: themeProvider.themeMode,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Colors.black,
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+      ),
+
       home: const AuthGate(),
 
-      // Register your routes
+      // Keep all your routes as-is
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpScreen(),
@@ -35,7 +68,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Gatekeeper that decides where to go based on login state
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -50,12 +82,10 @@ class AuthGate extends StatelessWidget {
           );
         }
 
-        // No user signed in → go to Login
         if (!snapshot.hasData) {
           return const LoginPage();
         }
 
-        // User is signed in → go to Home
         return const HomePage();
       },
     );

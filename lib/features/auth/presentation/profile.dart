@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:test_case/features/auth/presentation/home.dart';
+import 'package:test_case/main.dart';
 import 'package:test_case/widget/custom_navbar.dart';
 import '../../../core/services/auth_service.dart';
 
@@ -156,9 +158,7 @@ Widget buildProfileStack(BuildContext context, Function(BuildContext) signOut) {
             children: [
               const CircleAvatar(
                 radius: 28,
-                backgroundImage: AssetImage(
-                  "assets/images/profile.png",
-                ), // sample
+                backgroundImage: AssetImage("assets/images/profile.png"),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -196,6 +196,26 @@ Widget buildProfileStack(BuildContext context, Function(BuildContext) signOut) {
           ),
           child: Column(
             children: [
+              // 🌙 DARK MODE TOGGLE (ADDED HERE)
+              ListTile(
+                leading: const Icon(Icons.dark_mode),
+                title: const Text(
+                  "Dark Mode",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                trailing: Switch(
+                  value: Provider.of<ThemeProvider>(context).isDarkMode,
+                  onChanged: (_) {
+                    Provider.of<ThemeProvider>(
+                      context,
+                      listen: false,
+                    ).toggleTheme();
+                  },
+                ),
+              ),
+
+              _buildDivider(),
+
               _buildListTile(Icons.person, "Account Details"),
               _buildDivider(),
               _buildListTile(Icons.payment, "Payment History"),
@@ -226,6 +246,7 @@ Widget buildProfileStack(BuildContext context, Function(BuildContext) signOut) {
               _buildDivider(),
               _buildListTile(Icons.help_outline, "Get Help"),
               _buildDivider(),
+
               ListTile(
                 leading: const Icon(Icons.logout, color: Colors.red),
                 title: const Text(
