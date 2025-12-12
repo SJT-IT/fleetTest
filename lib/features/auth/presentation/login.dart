@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_case/wrapper.dart';
 import '../../../core/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -25,10 +26,10 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
 
       // Clear stack and go to home
-      Navigator.pushNamedAndRemoveUntil(
+      Navigator.pushAndRemoveUntil(
         context,
-        '/home',
-        (route) => false, // remove all previous routes
+        MaterialPageRoute(builder: (_) => const HomeWrapper()),
+        (route) => false, // removes all previous routes
       );
     } catch (e) {
       if (!mounted) return;

@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
 
       // Bottom Navigation
       bottomNavigationBar: CustomNavBar(
-        selectedIndex: 0,
+        selectedIndex: 1,
         icon1: Icons.home,
         icon2: Icons.search,
         icon3: Icons.favorite,

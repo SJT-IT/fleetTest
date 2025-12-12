@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart'; // <-- added
+import 'package:provider/provider.dart';
 import 'package:test_case/features/auth/presentation/home.dart';
 import 'package:test_case/features/auth/presentation/login.dart';
 import 'package:test_case/features/auth/presentation/profile.dart';
 import 'package:test_case/features/auth/presentation/signup.dart';
+import 'package:test_case/wrapper.dart'; // <-- Role-based wrapper
 
 // ----------------------
 // THEME PROVIDER
@@ -29,7 +30,7 @@ void main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => ThemeProvider(), // <-- added
+      create: (_) => ThemeProvider(),
       child: const MyApp(),
     ),
   );
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context); // <-- added
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
 
       home: const AuthGate(),
 
-      // Keep all your routes as-is
+      // Keep all your routes
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpScreen(),
@@ -68,6 +69,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ----------------------
+// AUTHENTICATION GATE
+// ----------------------
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -86,7 +90,8 @@ class AuthGate extends StatelessWidget {
           return const LoginPage();
         }
 
-        return const HomePage();
+        // User is logged in -> route based on role
+        return const HomeWrapper(); // <-- NEW wrapper for role-based routing
       },
     );
   }

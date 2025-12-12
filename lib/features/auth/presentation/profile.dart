@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_case/features/auth/presentation/home.dart';
 import 'package:test_case/main.dart';
 import 'package:test_case/widget/custom_navbar.dart';
+import 'package:test_case/wrapper.dart';
 import '../../../core/services/auth_service.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -38,7 +38,7 @@ class ProfilePage extends StatelessWidget {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  const HomePage(),
+                  const HomeWrapper(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                     const begin = Offset(-1.0, 0.0);

@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_case/main.dart';
 import '../../../core/services/auth_service.dart';
-import 'package:firebase_core/firebase_core.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MyApp());
-}
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,7 +15,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isLoading = false;
 
   void _signUp() async {
-    // Check passwords match first
     if (passwordController.text.trim() != confirmController.text.trim()) {
       if (!mounted) return;
       ScaffoldMessenger.of(
@@ -35,13 +26,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Perform async sign-up
+      // Assign role 'driver' by default
       await authService.value.createAccount(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
+        role: 'driver',
       );
 
-      // Only navigate if widget is still mounted
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
@@ -50,9 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text("Signup failed: $e")));
     } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -76,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               const SizedBox(height: 64),
               const Text(
-                'App name',
+                'App Name',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               const SizedBox(height: 64),
@@ -127,7 +116,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
 
               // Button
