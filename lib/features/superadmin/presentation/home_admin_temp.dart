@@ -24,8 +24,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: colors.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -33,23 +35,23 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ------------------------------------------------
-              // Header (Logo + Profile)
+              // Header
               // ------------------------------------------------
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Icon(
                         Icons.admin_panel_settings,
                         size: 32,
-                        color: Colors.white,
+                        color: colors.onSurface,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         "Super Admin Dashboard",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: colors.onSurface,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -61,10 +63,10 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(builder: (_) => const ProfilePage()),
                     ),
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 22,
-                      backgroundColor: Colors.white,
-                      child: Icon(Icons.person, color: Colors.black),
+                      backgroundColor: colors.primary,
+                      child: Icon(Icons.person, color: colors.onPrimary),
                     ),
                   ),
                 ],
@@ -104,7 +106,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
 
               // ------------------------------------------------
-              // Dealership List Section
+              // Dealerships
               // ------------------------------------------------
               SectionHeaderDual(
                 title: "Dealerships",
@@ -115,12 +117,19 @@ class _HomePageState extends State<HomePage> {
                 onFilterChanged: (v) => setState(() => dealershipFilter = v!),
                 onSortChanged: (v) => setState(() => dealershipSort = v!),
               ),
-              _dealershipsTable(),
+              _tableContainer(
+                context,
+                children: const [
+                  TableRowItem(title: "Sunrise Motors", subtitle: "Active"),
+                  TableRowItem(title: "Elite Auto Hub", subtitle: "Inactive"),
+                  TableRowItem(title: "Prime Wheels", subtitle: "Active"),
+                ],
+              ),
 
               const SizedBox(height: 25),
 
               // ------------------------------------------------
-              // Drivers List Section
+              // Drivers
               // ------------------------------------------------
               SectionHeaderWithSearch(
                 title: "Drivers",
@@ -130,12 +139,19 @@ class _HomePageState extends State<HomePage> {
                 filterItems: const ["All", "Active", "Inactive"],
                 onFilterChanged: (v) => setState(() => driverFilter = v!),
               ),
-              _driversTable(),
+              _tableContainer(
+                context,
+                children: const [
+                  TableRowItem(title: "John Doe", subtitle: "Active"),
+                  TableRowItem(title: "Sarah Kim", subtitle: "Inactive"),
+                  TableRowItem(title: "Ravi Kumar", subtitle: "Active"),
+                ],
+              ),
 
               const SizedBox(height: 25),
 
               // ------------------------------------------------
-              // Vehicles Section
+              // Vehicles
               // ------------------------------------------------
               SectionHeaderDual(
                 title: "Vehicles",
@@ -146,12 +162,19 @@ class _HomePageState extends State<HomePage> {
                 onFilterChanged: (v) => setState(() => vehicleFilter = v!),
                 onSortChanged: (v) => setState(() => vehicleDealerFilter = v!),
               ),
-              _vehiclesTable(),
+              _tableContainer(
+                context,
+                children: const [
+                  TableRowItem(title: "Toyota Corolla", subtitle: "Active"),
+                  TableRowItem(title: "Ford Ranger", subtitle: "Maintenance"),
+                  TableRowItem(title: "Honda City", subtitle: "Active"),
+                ],
+              ),
 
               const SizedBox(height: 25),
 
               // ------------------------------------------------
-              // Complaints Section
+              // Complaints
               // ------------------------------------------------
               SectionHeader(
                 title: "Complaints",
@@ -159,17 +182,24 @@ class _HomePageState extends State<HomePage> {
                 items: const ["All", "High", "Medium", "Low"],
                 onChanged: (v) => setState(() => complaintFilter = v!),
               ),
-              _complaintsTable(),
+              _tableContainer(
+                context,
+                children: const [
+                  TableRowItem(title: "Brake issue", subtitle: "High Priority"),
+                  TableRowItem(title: "Oil leak", subtitle: "Medium Priority"),
+                  TableRowItem(title: "AC failure", subtitle: "Low Priority"),
+                ],
+              ),
 
               const SizedBox(height: 25),
 
               // ------------------------------------------------
               // Super Admin Tools
               // ------------------------------------------------
-              const Text(
+              Text(
                 "Super Admin Tools",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: colors.onSurface,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -178,11 +208,16 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   _adminTool(
+                    context,
                     icon: Icons.manage_accounts,
                     label: "Manage Users",
                   ),
                   const SizedBox(width: 15),
-                  _adminTool(icon: Icons.settings, label: "System Settings"),
+                  _adminTool(
+                    context,
+                    icon: Icons.settings,
+                    label: "System Settings",
+                  ),
                 ],
               ),
 
@@ -210,85 +245,49 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ==============================
-  // DEALERSHIP TABLE
-  // ==============================
-  Widget _dealershipsTable() {
-    return _tableContainer(
-      children: const [
-        TableRowItem(title: "Sunrise Motors", subtitle: "Active"),
-        TableRowItem(title: "Elite Auto Hub", subtitle: "Inactive"),
-        TableRowItem(title: "Prime Wheels", subtitle: "Active"),
-      ],
-    );
-  }
-
-  // ==============================
-  // DRIVERS TABLE
-  // ==============================
-  Widget _driversTable() {
-    return _tableContainer(
-      children: const [
-        TableRowItem(title: "John Doe", subtitle: "Active"),
-        TableRowItem(title: "Sarah Kim", subtitle: "Inactive"),
-        TableRowItem(title: "Ravi Kumar", subtitle: "Active"),
-      ],
-    );
-  }
-
-  // ==============================
-  // VEHICLES TABLE
-  // ==============================
-  Widget _vehiclesTable() {
-    return _tableContainer(
-      children: const [
-        TableRowItem(title: "Toyota Corolla", subtitle: "Active"),
-        TableRowItem(title: "Ford Ranger", subtitle: "Maintenance"),
-        TableRowItem(title: "Honda City", subtitle: "Active"),
-      ],
-    );
-  }
-
-  // ==============================
-  // COMPLAINTS TABLE
-  // ==============================
-  Widget _complaintsTable() {
-    return _tableContainer(
-      children: const [
-        TableRowItem(title: "Brake issue", subtitle: "High Priority"),
-        TableRowItem(title: "Oil leak", subtitle: "Medium Priority"),
-        TableRowItem(title: "AC failure", subtitle: "Low Priority"),
-      ],
-    );
-  }
-
-  // ==============================
+  // ================================================================
   // UI HELPERS
-  // ==============================
-  Widget _tableContainer({required List<Widget> children}) {
+  // ================================================================
+  BoxDecoration _boxStyle(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return BoxDecoration(
+      color: colors.primary,
+      borderRadius: BorderRadius.circular(12),
+    );
+  }
+
+  Widget _tableContainer(
+    BuildContext context, {
+    required List<Widget> children,
+  }) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: _boxStyle(context),
       child: Column(children: children),
     );
   }
 
-  Widget _adminTool({required IconData icon, required String label}) {
+  Widget _adminTool(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+  }) {
+    final colors = Theme.of(context).colorScheme;
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey[900],
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: _boxStyle(context),
         child: Column(
           children: [
-            Icon(icon, color: Colors.white, size: 28),
+            Icon(icon, color: colors.onPrimary, size: 28),
             const SizedBox(height: 8),
-            Text(label, style: const TextStyle(color: Colors.white70)),
+            Text(
+              label,
+              // ignore: deprecated_member_use
+              style: TextStyle(color: colors.onPrimary.withOpacity(0.7)),
+            ),
           ],
         ),
       ),
@@ -302,7 +301,6 @@ class _HomePageState extends State<HomePage> {
 // ─────────────────────────────────────────────
 //
 
-// Summary Card
 class SummaryCard extends StatelessWidget {
   final String label;
   final String value;
@@ -317,30 +315,34 @@ class SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Container(
       width: 85,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: colors.primary,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
-          Icon(icon, color: Colors.white, size: 26),
+          Icon(icon, color: colors.onPrimary, size: 26),
           const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+            style: TextStyle(
+              color: colors.onPrimary,
               fontWeight: FontWeight.bold,
             ),
-            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(color: Colors.white70, fontSize: 11),
+            style: TextStyle(
+              // ignore: deprecated_member_use
+              color: colors.onPrimary.withOpacity(0.7),
+              fontSize: 11,
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -349,7 +351,9 @@ class SummaryCard extends StatelessWidget {
   }
 }
 
-// Basic Section Header with single dropdown
+// ------------------------------------------------
+// SECTION HEADERS
+// ------------------------------------------------
 class SectionHeader extends StatelessWidget {
   final String title;
   final String filterValue;
@@ -366,17 +370,18 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: const TextStyle(color: Colors.white, fontSize: 18)),
-        _dropdown(filterValue, items, onChanged),
+        Text(title, style: TextStyle(color: colors.onSurface, fontSize: 18)),
+        _dropdown(context, filterValue, items, onChanged),
       ],
     );
   }
 }
 
-// Section header with Filter + Sort
 class SectionHeaderDual extends StatelessWidget {
   final String title;
   final String filterValue;
@@ -399,16 +404,18 @@ class SectionHeaderDual extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(color: Colors.white, fontSize: 18)),
+        Text(title, style: TextStyle(color: colors.onSurface, fontSize: 18)),
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _dropdown(filterValue, filterItems, onFilterChanged),
-            _dropdown(sortValue, sortItems, onSortChanged),
+            _dropdown(context, filterValue, filterItems, onFilterChanged),
+            _dropdown(context, sortValue, sortItems, onSortChanged),
           ],
         ),
         const SizedBox(height: 10),
@@ -417,7 +424,6 @@ class SectionHeaderDual extends StatelessWidget {
   }
 }
 
-// Section header with search + filter
 class SectionHeaderWithSearch extends StatelessWidget {
   final String title;
   final String searchValue;
@@ -438,19 +444,22 @@ class SectionHeaderWithSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(color: Colors.white, fontSize: 18)),
+        Text(title, style: TextStyle(color: colors.onSurface, fontSize: 18)),
         const SizedBox(height: 12),
         TextField(
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: colors.onSurface),
           decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.search, color: Colors.white70),
+            prefixIcon: Icon(Icons.search, color: colors.onSurface),
             hintText: "Search drivers...",
-            hintStyle: const TextStyle(color: Colors.white54),
+            // ignore: deprecated_member_use
+            hintStyle: TextStyle(color: colors.onSurface.withOpacity(0.5)),
             filled: true,
-            fillColor: Colors.grey[900],
+            fillColor: colors.primary,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
@@ -459,45 +468,47 @@ class SectionHeaderWithSearch extends StatelessWidget {
           onChanged: onSearch,
         ),
         const SizedBox(height: 12),
-        _dropdown(filterValue, filterItems, onFilterChanged),
+        _dropdown(context, filterValue, filterItems, onFilterChanged),
         const SizedBox(height: 10),
       ],
     );
   }
 }
 
-// Dropdown widget
+// ------------------------------------------------
+// DROPDOWN
+// ------------------------------------------------
 Widget _dropdown(
+  BuildContext context,
   String value,
   List<String> items,
   ValueChanged<String?> onChanged,
 ) {
+  final colors = Theme.of(context).colorScheme;
+
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12),
     decoration: BoxDecoration(
-      color: Colors.grey[850],
+      color: colors.secondary,
       borderRadius: BorderRadius.circular(8),
     ),
     child: DropdownButton<String>(
       value: value,
       underline: const SizedBox(),
-      dropdownColor: Colors.grey[900],
-      icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-      style: const TextStyle(color: Colors.white),
+      dropdownColor: colors.surface,
+      icon: Icon(Icons.arrow_drop_down, color: colors.onSurface),
+      style: TextStyle(color: colors.onSurface),
       items: items
-          .map(
-            (e) => DropdownMenuItem(
-              value: e,
-              child: Text(e, style: const TextStyle(color: Colors.white)),
-            ),
-          )
+          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
           .toList(),
       onChanged: onChanged,
     ),
   );
 }
 
-// Table row widget
+// ------------------------------------------------
+// TABLE ROW
+// ------------------------------------------------
 class TableRowItem extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -506,11 +517,22 @@ class TableRowItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text(title, style: const TextStyle(color: Colors.white)),
-      subtitle: Text(subtitle, style: const TextStyle(color: Colors.white70)),
-      leading: const Icon(Icons.circle, size: 12, color: Colors.white70),
+      leading: Icon(
+        Icons.circle,
+        size: 12,
+        // ignore: deprecated_member_use
+        color: colors.onSurface.withOpacity(0.6),
+      ),
+      title: Text(title, style: TextStyle(color: colors.onSurface)),
+      subtitle: Text(
+        subtitle,
+        // ignore: deprecated_member_use
+        style: TextStyle(color: colors.onSurface.withOpacity(0.7)),
+      ),
     );
   }
 }

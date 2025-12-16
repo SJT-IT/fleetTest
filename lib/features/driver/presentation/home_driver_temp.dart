@@ -12,8 +12,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: colors.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -27,13 +29,13 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    children: const [
-                      Icon(Icons.car_rental, size: 32, color: Colors.white),
-                      SizedBox(width: 10),
+                    children: [
+                      Icon(Icons.car_rental, size: 32, color: colors.onSurface),
+                      const SizedBox(width: 10),
                       Text(
                         "FleetApp",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: colors.onSurface,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -47,10 +49,10 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(builder: (_) => const ProfilePage()),
                       );
                     },
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 22,
-                      backgroundColor: Colors.white,
-                      child: Icon(Icons.person, color: Colors.black),
+                      backgroundColor: colors.primary,
+                      child: Icon(Icons.person, color: colors.onPrimary),
                     ),
                   ),
                 ],
@@ -61,45 +63,19 @@ class _HomePageState extends State<HomePage> {
               // ------------------------------------------------
               // Assigned Vehicle Card
               // ------------------------------------------------
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[900],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Assigned Vehicle",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Toyota Corolla 2021",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "Reg No: ABC-1234",
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "Status: Active",
-                      style: TextStyle(color: Colors.greenAccent, fontSize: 16),
-                    ),
-                  ],
-                ),
+              _infoCard(
+                context,
+                title: "Assigned Vehicle",
+                children: [
+                  Text("Toyota Corolla 2021", style: _titleStyle(context)),
+                  const SizedBox(height: 5),
+                  Text("Reg No: ABC-1234", style: _subtitleStyle(context)),
+                  const SizedBox(height: 5),
+                  const Text(
+                    "Status: Active",
+                    style: TextStyle(color: Colors.greenAccent, fontSize: 16),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 20),
@@ -107,40 +83,17 @@ class _HomePageState extends State<HomePage> {
               // ------------------------------------------------
               // Dealership Info Card
               // ------------------------------------------------
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[900],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Dealership Info",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Sunrise Motors",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "Contact: +91 9876543210",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ],
-                ),
+              _infoCard(
+                context,
+                title: "Dealership Info",
+                children: [
+                  Text("Sunrise Motors", style: _titleStyle(context, size: 18)),
+                  const SizedBox(height: 5),
+                  Text(
+                    "Contact: +91 9876543210",
+                    style: _subtitleStyle(context),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 25),
@@ -152,14 +105,17 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _quickActionButton(
+                    context,
                     icon: Icons.report_problem,
                     label: "Report Issue",
                   ),
                   _quickActionButton(
+                    context,
                     icon: Icons.list_alt,
                     label: "My Complaints",
                   ),
                   _quickActionButton(
+                    context,
                     icon: Icons.support_agent,
                     label: "Support",
                   ),
@@ -169,20 +125,14 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 25),
 
               // ------------------------------------------------
-              // Optional: Complaint Stats
+              // Complaint Stats
               // ------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[900],
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: _boxStyle(context),
                 child: Column(
                   children: const [
-                    Text(
-                      "Complaint Status",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
+                    Text("Complaint Status", style: TextStyle(fontSize: 18)),
                     SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -215,47 +165,107 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (context, a, b) => const ProfilePage(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(1.0, 0.0);
-                    const end = Offset.zero;
-                    const curve = Curves.easeInOut;
+              pageBuilder: (_, __, ___) => const ProfilePage(),
+              transitionsBuilder: (_, animation, __, child) {
+                final tween = Tween(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).chain(CurveTween(curve: Curves.easeInOut));
 
-                    final tween = Tween(
-                      begin: begin,
-                      end: end,
-                    ).chain(CurveTween(curve: curve));
-
-                    return SlideTransition(
-                      position: animation.drive(tween),
-                      child: child,
-                    );
-                  },
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
             ),
           );
         },
-        selectedIndex: 1, // Home is active
+        selectedIndex: 1,
       ),
     );
   }
 
-  // ---------------- Quick Action Button ----------------
-  Widget _quickActionButton({required IconData icon, required String label}) {
+  // ================================================================
+  // Reusable Styles & Widgets
+  // ================================================================
+  BoxDecoration _boxStyle(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return BoxDecoration(
+      color: colors.primary,
+      borderRadius: BorderRadius.circular(12),
+    );
+  }
+
+  TextStyle _titleStyle(BuildContext context, {double size = 20}) {
+    final colors = Theme.of(context).colorScheme;
+
+    return TextStyle(
+      color: colors.onPrimary,
+      fontSize: size,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
+  TextStyle _subtitleStyle(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    // ignore: deprecated_member_use
+    return TextStyle(color: colors.onPrimary.withOpacity(0.7), fontSize: 16);
+  }
+
+  Widget _infoCard(
+    BuildContext context, {
+    required String title,
+    required List<Widget> children,
+  }) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: _boxStyle(context),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              // ignore: deprecated_member_use
+              color: colors.onPrimary.withOpacity(0.7),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...children,
+        ],
+      ),
+    );
+  }
+
+  Widget _quickActionButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+  }) {
+    final colors = Theme.of(context).colorScheme;
+
     return Container(
       width: 100,
       padding: const EdgeInsets.symmetric(vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.grey[850],
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: _boxStyle(context),
       child: Column(
         children: [
-          Icon(icon, color: Colors.white),
+          Icon(icon, color: colors.onPrimary),
           const SizedBox(height: 6),
           Text(
             label,
-            style: const TextStyle(color: Colors.white70, fontSize: 12),
+            style: TextStyle(
+              // ignore: deprecated_member_use
+              color: colors.onPrimary.withOpacity(0.7),
+              fontSize: 12,
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -264,7 +274,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// ---------------- Complaint Stats Component ----------------
+// ------------------------------------------------
+// Complaint Stats Component
+// ------------------------------------------------
 class _StatBox extends StatelessWidget {
   final String label;
   final int number;
@@ -273,18 +285,21 @@ class _StatBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Column(
       children: [
         Text(
           number.toString(),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: colors.onPrimary,
           ),
         ),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.white70)),
+        // ignore: deprecated_member_use
+        Text(label, style: TextStyle(color: colors.onPrimary.withOpacity(0.7))),
       ],
     );
   }

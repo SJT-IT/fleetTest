@@ -16,8 +16,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: colors.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -25,19 +27,19 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ------------------------------------------------
-              // Header (Logo + Profile)
+              // Header
               // ------------------------------------------------
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    children: const [
-                      Icon(Icons.dashboard, color: Colors.white, size: 32),
-                      SizedBox(width: 10),
+                    children: [
+                      Icon(Icons.dashboard, color: colors.onSurface, size: 32),
+                      const SizedBox(width: 10),
                       Text(
                         "Admin Dashboard",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: colors.onSurface,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -51,10 +53,10 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(builder: (_) => const ProfilePage()),
                       );
                     },
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 22,
-                      backgroundColor: Colors.white,
-                      child: Icon(Icons.person, color: Colors.black),
+                      backgroundColor: colors.primary,
+                      child: Icon(Icons.person, color: colors.onPrimary),
                     ),
                   ),
                 ],
@@ -63,7 +65,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
 
               // ------------------------------------------------
-              // Summary Cards (Top Row)
+              // Summary Cards
               // ------------------------------------------------
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
 
               // ------------------------------------------------
-              // Driver List Section
+              // Driver List
               // ------------------------------------------------
               SectionHeader(
                 title: "Driver List",
@@ -97,12 +99,12 @@ class _HomePageState extends State<HomePage> {
                 items: const ["All", "Active", "Inactive"],
                 onChanged: (v) => setState(() => driverFilter = v!),
               ),
-              _driverList(),
+              _driverList(context),
 
               const SizedBox(height: 25),
 
               // ------------------------------------------------
-              // Vehicle List Section
+              // Vehicle List
               // ------------------------------------------------
               SectionHeader(
                 title: "Vehicle List",
@@ -110,12 +112,12 @@ class _HomePageState extends State<HomePage> {
                 items: const ["All", "Active", "Maintenance"],
                 onChanged: (v) => setState(() => vehicleFilter = v!),
               ),
-              _vehicleList(),
+              _vehicleList(context),
 
               const SizedBox(height: 25),
 
               // ------------------------------------------------
-              // Complaints List Section
+              // Complaints
               // ------------------------------------------------
               SectionHeader(
                 title: "Complaints",
@@ -123,21 +125,26 @@ class _HomePageState extends State<HomePage> {
                 items: const ["All", "High", "Medium", "Low"],
                 onChanged: (v) => setState(() => complaintFilter = v!),
               ),
-              _complaintsList(),
+              _complaintsList(context),
 
               const SizedBox(height: 25),
 
               // ------------------------------------------------
-              // Quick Actions (Optional)
+              // Quick Actions
               // ------------------------------------------------
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _quickAction(
+                    context,
                     icon: Icons.assignment_add,
                     label: "Assign Complaint",
                   ),
-                  _quickAction(icon: Icons.build, label: "Update Vehicle"),
+                  _quickAction(
+                    context,
+                    icon: Icons.build,
+                    label: "Update Vehicle",
+                  ),
                 ],
               ),
             ],
@@ -166,14 +173,26 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ================================================================
-  // Driver List Widget
+  // Reusable Box Style
   // ================================================================
-  Widget _driverList() {
+  BoxDecoration _boxStyle(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return BoxDecoration(
+      color: colors.primary,
+      borderRadius: BorderRadius.circular(12),
+    );
+  }
+
+  // ================================================================
+  // Lists
+  // ================================================================
+  Widget _driverList(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _boxStyle(),
-      child: Column(
-        children: const [
+      decoration: _boxStyle(context),
+      child: const Column(
+        children: [
           DriverRow(name: "John Doe", status: "Active"),
           DriverRow(name: "Sam Patel", status: "Inactive"),
           DriverRow(name: "Alice Sam", status: "Active"),
@@ -182,15 +201,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ================================================================
-  // Vehicle List Widget
-  // ================================================================
-  Widget _vehicleList() {
+  Widget _vehicleList(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _boxStyle(),
-      child: Column(
-        children: const [
+      decoration: _boxStyle(context),
+      child: const Column(
+        children: [
           VehicleRow(model: "Toyota Corolla", status: "Active"),
           VehicleRow(model: "Ford F-150", status: "Maintenance"),
           VehicleRow(model: "Honda Civic", status: "Active"),
@@ -199,15 +215,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ================================================================
-  // Complaints List Widget
-  // ================================================================
-  Widget _complaintsList() {
+  Widget _complaintsList(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _boxStyle(),
-      child: Column(
-        children: const [
+      decoration: _boxStyle(context),
+      child: const Column(
+        children: [
           ComplaintRow(issue: "Brake issue", priority: "High"),
           ComplaintRow(issue: "AC failure", priority: "Medium"),
           ComplaintRow(issue: "Noise issue", priority: "Low"),
@@ -216,36 +229,41 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Reusable style
-  BoxDecoration _boxStyle() => BoxDecoration(
-    color: Colors.grey[900],
-    borderRadius: BorderRadius.circular(12),
-  );
+  // ================================================================
+  // Quick Action
+  // ================================================================
+  Widget _quickAction(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+  }) {
+    final colors = Theme.of(context).colorScheme;
 
-  // Quick Actions
-  Widget _quickAction({required IconData icon, required String label}) {
+    // ignore: deprecated_member_use
+    var withOpacity = colors.onPrimary.withOpacity(0.7);
     return Container(
       width: 150,
       padding: const EdgeInsets.symmetric(vertical: 16),
-      decoration: _boxStyle(),
+      decoration: _boxStyle(context),
       child: Column(
         children: [
-          Icon(icon, color: Colors.white),
+          Icon(icon, color: colors.onPrimary),
           const SizedBox(height: 6),
-          Text(label, style: const TextStyle(color: Colors.white70)),
+          Text(
+            label,
+            // ignore: deprecated_member_use
+            style: TextStyle(color: withOpacity),
+          ),
         ],
       ),
     );
   }
 }
 
-//
 // ──────────────────────────────────────────────────────────────
-//   REUSABLE WIDGETS
+// REUSABLE WIDGETS
 // ──────────────────────────────────────────────────────────────
-//
 
-// Summary Card
 class SummaryCard extends StatelessWidget {
   final String label;
   final String value;
@@ -260,29 +278,35 @@ class SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Container(
       width: 110,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: colors.primary,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
-          Icon(icon, color: Colors.white),
+          Icon(icon, color: colors.onPrimary),
           const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+            style: TextStyle(
+              color: colors.onPrimary,
               fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(color: Colors.white70, fontSize: 12),
+            style: TextStyle(
+              // ignore: deprecated_member_use
+              color: colors.onPrimary.withOpacity(0.7),
+              fontSize: 12,
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -291,7 +315,6 @@ class SummaryCard extends StatelessWidget {
   }
 }
 
-// Section header with filter dropdown
 class SectionHeader extends StatelessWidget {
   final String title;
   final String filterValue;
@@ -308,13 +331,15 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: colors.onSurface,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -322,22 +347,17 @@ class SectionHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: Colors.grey[850],
+            color: colors.secondary,
             borderRadius: BorderRadius.circular(8),
           ),
           child: DropdownButton<String>(
             value: filterValue,
             underline: const SizedBox(),
-            dropdownColor: Colors.grey[900],
-            icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-            style: const TextStyle(color: Colors.white),
+            dropdownColor: colors.surface,
+            icon: Icon(Icons.arrow_drop_down, color: colors.onSurface),
+            style: TextStyle(color: colors.onSurface),
             items: items
-                .map(
-                  (e) => DropdownMenuItem(
-                    value: e,
-                    child: Text(e, style: const TextStyle(color: Colors.white)),
-                  ),
-                )
+                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                 .toList(),
             onChanged: onChanged,
           ),
@@ -347,7 +367,6 @@ class SectionHeader extends StatelessWidget {
   }
 }
 
-// Rows for driver list
 class DriverRow extends StatelessWidget {
   final String name;
   final String status;
@@ -356,15 +375,20 @@ class DriverRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return ListTile(
-      title: Text(name, style: const TextStyle(color: Colors.white)),
-      subtitle: Text(status, style: const TextStyle(color: Colors.white70)),
-      leading: const Icon(Icons.person, color: Colors.white),
+      leading: Icon(Icons.person, color: colors.onSurface),
+      title: Text(name, style: TextStyle(color: colors.onSurface)),
+      subtitle: Text(
+        status,
+        // ignore: deprecated_member_use
+        style: TextStyle(color: colors.onSurface.withOpacity(0.7)),
+      ),
     );
   }
 }
 
-// Rows for vehicles
 class VehicleRow extends StatelessWidget {
   final String model;
   final String status;
@@ -373,8 +397,11 @@ class VehicleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return ListTile(
-      title: Text(model, style: const TextStyle(color: Colors.white)),
+      leading: Icon(Icons.local_shipping, color: colors.onSurface),
+      title: Text(model, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
         status,
         style: TextStyle(
@@ -383,12 +410,10 @@ class VehicleRow extends StatelessWidget {
               : Colors.greenAccent,
         ),
       ),
-      leading: const Icon(Icons.local_shipping, color: Colors.white),
     );
   }
 }
 
-// Rows for complaints
 class ComplaintRow extends StatelessWidget {
   final String issue;
   final String priority;
@@ -397,16 +422,21 @@ class ComplaintRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = priority == "High"
+    final colors = Theme.of(context).colorScheme;
+
+    final Color priorityColor = priority == "High"
         ? Colors.redAccent
         : priority == "Medium"
         ? Colors.orangeAccent
         : Colors.greenAccent;
 
     return ListTile(
-      title: Text(issue, style: const TextStyle(color: Colors.white)),
-      subtitle: Text("Priority: $priority", style: TextStyle(color: color)),
-      leading: const Icon(Icons.warning, color: Colors.white),
+      leading: Icon(Icons.warning, color: colors.onSurface),
+      title: Text(issue, style: TextStyle(color: colors.onSurface)),
+      subtitle: Text(
+        "Priority: $priority",
+        style: TextStyle(color: priorityColor),
+      ),
     );
   }
 }
