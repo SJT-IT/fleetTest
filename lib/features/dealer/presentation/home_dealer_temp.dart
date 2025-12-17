@@ -14,250 +14,274 @@ class _HomePageState extends State<HomePage> {
   String vehicleFilter = "All";
   String complaintFilter = "All";
 
+  int selectedIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       backgroundColor: colors.surface,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ------------------------------------------------
-              // Header
-              // ------------------------------------------------
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.dashboard, color: colors.onSurface, size: 32),
-                      const SizedBox(width: 10),
-                      Text(
-                        "Admin Dashboard",
-                        style: TextStyle(
-                          color: colors.onSurface,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+      body: Stack(
+        children: [
+          // Main content
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 80,
+            ), // Reserve space for floating navbar
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // ------------------------------------------------
+                    // Header
+                    // ------------------------------------------------
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.dashboard,
+                              color: colors.onSurface,
+                              size: 32,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              "Admin Dashboard",
+                              style: TextStyle(
+                                color: colors.onSurface,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const ProfilePage()),
-                      );
-                    },
-                    child: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: colors.primary,
-                      child: Icon(Icons.person, color: colors.onPrimary),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const ProfilePage(),
+                              ),
+                            );
+                          },
+                          child: CircleAvatar(
+                            radius: 22,
+                            backgroundColor: colors.primary,
+                            child: Icon(Icons.person, color: colors.onPrimary),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 20),
+
+                    // ------------------------------------------------
+                    // Summary Cards
+                    // ------------------------------------------------
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        SummaryCard(
+                          label: "Total Drivers",
+                          value: "12",
+                          icon: Icons.people,
+                        ),
+                        SummaryCard(
+                          label: "Vehicles",
+                          value: "8 Active / 2 Maint",
+                          icon: Icons.local_shipping,
+                        ),
+                        SummaryCard(
+                          label: "Open Complaints",
+                          value: "5",
+                          icon: Icons.report_problem,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // ------------------------------------------------
+                    // Driver List
+                    // ------------------------------------------------
+                    SectionHeader(
+                      title: "Driver List",
+                      filterValue: driverFilter,
+                      items: const ["All", "Active", "Inactive"],
+                      onChanged: (v) => setState(() => driverFilter = v!),
+                    ),
+                    _driverList(context),
+
+                    const SizedBox(height: 25),
+
+                    // ------------------------------------------------
+                    // Vehicle List
+                    // ------------------------------------------------
+                    SectionHeader(
+                      title: "Vehicle List",
+                      filterValue: vehicleFilter,
+                      items: const ["All", "Active", "Maintenance"],
+                      onChanged: (v) => setState(() => vehicleFilter = v!),
+                    ),
+                    _vehicleList(context),
+
+                    const SizedBox(height: 25),
+
+                    // ------------------------------------------------
+                    // Complaints
+                    // ------------------------------------------------
+                    SectionHeader(
+                      title: "Complaints",
+                      filterValue: complaintFilter,
+                      items: const ["All", "High", "Medium", "Low"],
+                      onChanged: (v) => setState(() => complaintFilter = v!),
+                    ),
+                    _complaintsList(context),
+
+                    const SizedBox(height: 25),
+
+                    // ------------------------------------------------
+                    // Quick Actions
+                    // ------------------------------------------------
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _quickAction(
+                          context,
+                          icon: Icons.assignment_add,
+                          label: "Assign Complaint",
+                        ),
+                        _quickAction(
+                          context,
+                          icon: Icons.build,
+                          label: "Update Vehicle",
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-
-              const SizedBox(height: 20),
-
-              // ------------------------------------------------
-              // Summary Cards
-              // ------------------------------------------------
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  SummaryCard(
-                    label: "Total Drivers",
-                    value: "12",
-                    icon: Icons.people,
-                  ),
-                  SummaryCard(
-                    label: "Vehicles",
-                    value: "8 Active / 2 Maint",
-                    icon: Icons.local_shipping,
-                  ),
-                  SummaryCard(
-                    label: "Open Complaints",
-                    value: "5",
-                    icon: Icons.report_problem,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 30),
-
-              // ------------------------------------------------
-              // Driver List
-              // ------------------------------------------------
-              SectionHeader(
-                title: "Driver List",
-                filterValue: driverFilter,
-                items: const ["All", "Active", "Inactive"],
-                onChanged: (v) => setState(() => driverFilter = v!),
-              ),
-              _driverList(context),
-
-              const SizedBox(height: 25),
-
-              // ------------------------------------------------
-              // Vehicle List
-              // ------------------------------------------------
-              SectionHeader(
-                title: "Vehicle List",
-                filterValue: vehicleFilter,
-                items: const ["All", "Active", "Maintenance"],
-                onChanged: (v) => setState(() => vehicleFilter = v!),
-              ),
-              _vehicleList(context),
-
-              const SizedBox(height: 25),
-
-              // ------------------------------------------------
-              // Complaints
-              // ------------------------------------------------
-              SectionHeader(
-                title: "Complaints",
-                filterValue: complaintFilter,
-                items: const ["All", "High", "Medium", "Low"],
-                onChanged: (v) => setState(() => complaintFilter = v!),
-              ),
-              _complaintsList(context),
-
-              const SizedBox(height: 25),
-
-              // ------------------------------------------------
-              // Quick Actions
-              // ------------------------------------------------
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _quickAction(
-                    context,
-                    icon: Icons.assignment_add,
-                    label: "Assign Complaint",
-                  ),
-                  _quickAction(
-                    context,
-                    icon: Icons.build,
-                    label: "Update Vehicle",
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
+
+          // Floating CustomNavBar
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 16,
+            child: CustomNavBar(
+              icon1: Icons.home,
+              icon2: Icons.search,
+              icon3: Icons.favorite,
+              icon4: Icons.person,
+              selectedIndex: selectedIndex,
+              onTap1: () => setState(() => selectedIndex = 1),
+              onTap2: () => setState(() => selectedIndex = 2),
+              onTap3: () => setState(() => selectedIndex = 3),
+              onTap4: () {
+                setState(() => selectedIndex = 4);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfilePage()),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ================================================================
+// Reusable Box Style
+// ================================================================
+BoxDecoration _boxStyle(BuildContext context) {
+  final colors = Theme.of(context).colorScheme;
+
+  return BoxDecoration(
+    color: colors.primary,
+    borderRadius: BorderRadius.circular(12),
+  );
+}
+
+// ================================================================
+// Lists
+// ================================================================
+Widget _driverList(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: _boxStyle(context),
+    child: const Column(
+      children: [
+        DriverRow(name: "John Doe", status: "Active"),
+        DriverRow(name: "Sam Patel", status: "Inactive"),
+        DriverRow(name: "Alice Sam", status: "Active"),
+      ],
+    ),
+  );
+}
+
+Widget _vehicleList(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: _boxStyle(context),
+    child: const Column(
+      children: [
+        VehicleRow(model: "Toyota Corolla", status: "Active"),
+        VehicleRow(model: "Ford F-150", status: "Maintenance"),
+        VehicleRow(model: "Honda Civic", status: "Active"),
+      ],
+    ),
+  );
+}
+
+Widget _complaintsList(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: _boxStyle(context),
+    child: const Column(
+      children: [
+        ComplaintRow(issue: "Brake issue", priority: "High"),
+        ComplaintRow(issue: "AC failure", priority: "Medium"),
+        ComplaintRow(issue: "Noise issue", priority: "Low"),
+      ],
+    ),
+  );
+}
+
+// ================================================================
+// Quick Action
+// ================================================================
+Widget _quickAction(
+  BuildContext context, {
+  required IconData icon,
+  required String label,
+}) {
+  final colors = Theme.of(context).colorScheme;
+
+  // ignore: deprecated_member_use
+  var withOpacity = colors.onPrimary.withOpacity(0.7);
+  return Container(
+    width: 150,
+    padding: const EdgeInsets.symmetric(vertical: 16),
+    decoration: _boxStyle(context),
+    child: Column(
+      children: [
+        Icon(icon, color: colors.onPrimary),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          // ignore: deprecated_member_use
+          style: TextStyle(color: withOpacity),
         ),
-      ),
-
-      // Bottom Nav
-      bottomNavigationBar: CustomNavBar(
-        icon1: Icons.home,
-        icon2: Icons.search,
-        icon3: Icons.favorite,
-        icon4: Icons.person,
-        onTap1: () {},
-        onTap2: () {},
-        onTap3: () {},
-        onTap4: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const ProfilePage()),
-          );
-        },
-        selectedIndex: 1,
-      ),
-    );
-  }
-
-  // ================================================================
-  // Reusable Box Style
-  // ================================================================
-  BoxDecoration _boxStyle(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
-    return BoxDecoration(
-      color: colors.primary,
-      borderRadius: BorderRadius.circular(12),
-    );
-  }
-
-  // ================================================================
-  // Lists
-  // ================================================================
-  Widget _driverList(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: _boxStyle(context),
-      child: const Column(
-        children: [
-          DriverRow(name: "John Doe", status: "Active"),
-          DriverRow(name: "Sam Patel", status: "Inactive"),
-          DriverRow(name: "Alice Sam", status: "Active"),
-        ],
-      ),
-    );
-  }
-
-  Widget _vehicleList(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: _boxStyle(context),
-      child: const Column(
-        children: [
-          VehicleRow(model: "Toyota Corolla", status: "Active"),
-          VehicleRow(model: "Ford F-150", status: "Maintenance"),
-          VehicleRow(model: "Honda Civic", status: "Active"),
-        ],
-      ),
-    );
-  }
-
-  Widget _complaintsList(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: _boxStyle(context),
-      child: const Column(
-        children: [
-          ComplaintRow(issue: "Brake issue", priority: "High"),
-          ComplaintRow(issue: "AC failure", priority: "Medium"),
-          ComplaintRow(issue: "Noise issue", priority: "Low"),
-        ],
-      ),
-    );
-  }
-
-  // ================================================================
-  // Quick Action
-  // ================================================================
-  Widget _quickAction(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-  }) {
-    final colors = Theme.of(context).colorScheme;
-
-    // ignore: deprecated_member_use
-    var withOpacity = colors.onPrimary.withOpacity(0.7);
-    return Container(
-      width: 150,
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      decoration: _boxStyle(context),
-      child: Column(
-        children: [
-          Icon(icon, color: colors.onPrimary),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            // ignore: deprecated_member_use
-            style: TextStyle(color: withOpacity),
-          ),
-        ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
 }
 
 // ──────────────────────────────────────────────────────────────

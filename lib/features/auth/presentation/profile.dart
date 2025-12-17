@@ -25,44 +25,62 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    int selectedIndex = 4;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
-        backgroundColor: colors.surface,
-        foregroundColor: colors.onSurface,
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onPrimary,
         elevation: 0,
       ),
-      body: _buildProfileStack(context, _signOut),
-      bottomNavigationBar: CustomNavBar(
-        icon1: Icons.home,
-        icon2: Icons.search,
-        icon3: Icons.favorite,
-        icon4: Icons.person,
-        onTap1: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) => const HomeWrapper(),
-              transitionsBuilder: (_, animation, __, child) {
-                final tween = Tween(
-                  begin: const Offset(-1.0, 0.0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut));
+      body: Stack(
+        children: [
+          // Main content
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 80,
+            ), // Reserve space for navbar
+            child: _buildProfileStack(context, _signOut),
+          ),
 
-                return SlideTransition(
-                  position: animation.drive(tween),
-                  child: child,
+          // Floating CustomNavBar
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 16,
+            child: CustomNavBar(
+              icon1: Icons.home,
+              icon2: Icons.search,
+              icon3: Icons.favorite,
+              icon4: Icons.person,
+              selectedIndex: selectedIndex,
+              onTap1: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, _, _) => const HomeWrapper(),
+                    transitionsBuilder: (_, animation, _, child) {
+                      final tween = Tween(
+                        begin: const Offset(-1.0, 0.0),
+                        end: Offset.zero,
+                      ).chain(CurveTween(curve: Curves.easeInOut));
+
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ),
+                  (route) => false,
                 );
               },
+              onTap2: () {},
+              onTap3: () {},
+              onTap4: () {},
             ),
-            (route) => false,
-          );
-        },
-        onTap2: () {},
-        onTap3: () {},
-        onTap4: () {},
-        selectedIndex: 4,
+          ),
+        ],
       ),
     );
   }
@@ -80,7 +98,7 @@ void showLogoutConfirmation(
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.primary,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -95,7 +113,7 @@ void showLogoutConfirmation(
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: colors.onSurface,
+                color: colors.onPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -104,7 +122,7 @@ void showLogoutConfirmation(
               style: TextStyle(
                 fontSize: 15,
                 // ignore: deprecated_member_use
-                color: colors.onSurface.withOpacity(0.7),
+                color: colors.onPrimary.withOpacity(0.7),
               ),
             ),
             const SizedBox(height: 28),
