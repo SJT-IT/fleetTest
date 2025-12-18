@@ -11,7 +11,6 @@ class ProfilePage extends StatelessWidget {
   void _signOut(BuildContext context) async {
     try {
       await authService.value.signOut();
-
       if (!context.mounted) return;
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
@@ -24,23 +23,21 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     int selectedIndex = 4;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
-        backgroundColor: colors.primary,
-        foregroundColor: colors.onPrimary,
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
         elevation: 0,
       ),
       body: Stack(
         children: [
           // Main content
           Padding(
-            padding: const EdgeInsets.only(
-              bottom: 80,
-            ), // Reserve space for navbar
+            padding: const EdgeInsets.only(bottom: 80),
             child: _buildProfileStack(context, _signOut),
           ),
 
@@ -93,12 +90,12 @@ void showLogoutConfirmation(
   BuildContext context,
   Function(BuildContext) signOut,
 ) {
-  final colors = Theme.of(context).colorScheme;
+  final colorScheme = Theme.of(context).colorScheme;
 
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: colors.primary,
+    backgroundColor: colorScheme.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -113,7 +110,7 @@ void showLogoutConfirmation(
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: colors.onPrimary,
+                color: colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 12),
@@ -122,7 +119,7 @@ void showLogoutConfirmation(
               style: TextStyle(
                 fontSize: 15,
                 // ignore: deprecated_member_use
-                color: colors.onPrimary.withOpacity(0.7),
+                color: colorScheme.onSurface.withOpacity(0.7),
               ),
             ),
             const SizedBox(height: 28),
@@ -136,6 +133,7 @@ void showLogoutConfirmation(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      foregroundColor: colorScheme.primary,
                     ),
                     child: const Text("Cancel"),
                   ),
@@ -148,8 +146,8 @@ void showLogoutConfirmation(
                       signOut(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      foregroundColor: Colors.white,
+                      backgroundColor: colorScheme.error,
+                      foregroundColor: colorScheme.onError,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -174,15 +172,13 @@ Widget _buildProfileStack(
   BuildContext context,
   Function(BuildContext) signOut,
 ) {
-  final colors = Theme.of(context).colorScheme;
+  final colorScheme = Theme.of(context).colorScheme;
 
   return SingleChildScrollView(
     padding: const EdgeInsets.all(16),
     child: Column(
       children: [
-        // ------------------------------------------------
         // Profile Card
-        // ------------------------------------------------
         Container(
           padding: const EdgeInsets.all(16),
           decoration: _cardStyle(context),
@@ -202,7 +198,7 @@ Widget _buildProfileStack(
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: colors.onPrimary,
+                        color: colorScheme.onPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -210,14 +206,14 @@ Widget _buildProfileStack(
                       "Welcome to California",
                       style: TextStyle(
                         // ignore: deprecated_member_use
-                        color: colors.onPrimary.withOpacity(0.7),
+                        color: colorScheme.onPrimary.withOpacity(0.7),
                       ),
                     ),
                   ],
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.edit, color: colors.onPrimary),
+                icon: Icon(Icons.edit, color: colorScheme.onPrimary),
                 onPressed: () {},
               ),
             ],
@@ -226,21 +222,19 @@ Widget _buildProfileStack(
 
         const SizedBox(height: 20),
 
-        // ------------------------------------------------
-        // Settings Card (Theme Toggle)
-        // ------------------------------------------------
+        // Settings Card
         Container(
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: _cardStyle(context),
           child: Column(
             children: [
               ListTile(
-                leading: Icon(Icons.dark_mode, color: colors.onPrimary),
+                leading: Icon(Icons.dark_mode, color: colorScheme.onPrimary),
                 title: Text(
                   "Dark Mode",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: colors.onPrimary,
+                    color: colorScheme.onPrimary,
                   ),
                 ),
                 trailing: Switch(
@@ -251,51 +245,77 @@ Widget _buildProfileStack(
                       listen: false,
                     ).toggleTheme();
                   },
+                  activeThumbColor: colorScheme.secondary,
                 ),
               ),
-              _divider(),
-              _buildListTile(context, Icons.person, "Account Details"),
-              _divider(),
-              _buildListTile(context, Icons.payment, "Payment History"),
-              _divider(),
-              _buildListTile(context, Icons.notifications, "Notification"),
-              _divider(),
-              _buildListTile(context, Icons.settings, "Settings"),
+              _divider(colorScheme),
+              _buildListTile(
+                context,
+                Icons.person,
+                "Account Details",
+                colorScheme,
+              ),
+              _divider(colorScheme),
+              _buildListTile(
+                context,
+                Icons.payment,
+                "Payment History",
+                colorScheme,
+              ),
+              _divider(colorScheme),
+              _buildListTile(
+                context,
+                Icons.notifications,
+                "Notification",
+                colorScheme,
+              ),
+              _divider(colorScheme),
+              _buildListTile(context, Icons.settings, "Settings", colorScheme),
             ],
           ),
         ),
 
         const SizedBox(height: 20),
 
-        // ------------------------------------------------
         // Support & Logout
-        // ------------------------------------------------
         Container(
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: _cardStyle(context),
           child: Column(
             children: [
-              _buildListTile(context, Icons.phone, "Contact Us"),
-              _divider(),
-              _buildListTile(context, Icons.description, "Terms & Conditions"),
-              _divider(),
-              _buildListTile(context, Icons.lock, "Privacy Policy"),
-              _divider(),
-              _buildListTile(context, Icons.help_outline, "Get Help"),
-              _divider(),
+              _buildListTile(context, Icons.phone, "Contact Us", colorScheme),
+              _divider(colorScheme),
+              _buildListTile(
+                context,
+                Icons.description,
+                "Terms & Conditions",
+                colorScheme,
+              ),
+              _divider(colorScheme),
+              _buildListTile(
+                context,
+                Icons.lock,
+                "Privacy Policy",
+                colorScheme,
+              ),
+              _divider(colorScheme),
+              _buildListTile(
+                context,
+                Icons.help_outline,
+                "Get Help",
+                colorScheme,
+              ),
+              _divider(colorScheme),
               ListTile(
-                leading: const Icon(Icons.logout, color: Colors.redAccent),
-                title: const Text(
+                leading: Icon(Icons.logout, color: colorScheme.error),
+                title: Text(
                   "Log Out",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: Colors.redAccent,
+                    color: colorScheme.error,
                   ),
                 ),
-                trailing: const Icon(
-                  Icons.chevron_right,
-                  color: Colors.redAccent,
-                ),
+                trailing: Icon(Icons.chevron_right, color: colorScheme.error),
                 onTap: () => showLogoutConfirmation(context, signOut),
               ),
             ],
@@ -310,28 +330,40 @@ Widget _buildProfileStack(
 // HELPERS
 // ================================================================
 BoxDecoration _cardStyle(BuildContext context) {
-  final colors = Theme.of(context).colorScheme;
+  final colorScheme = Theme.of(context).colorScheme;
 
   return BoxDecoration(
-    color: colors.primary,
+    color: colorScheme.primary,
     borderRadius: BorderRadius.circular(16),
   );
 }
 
-Widget _buildListTile(BuildContext context, IconData icon, String title) {
-  final colors = Theme.of(context).colorScheme;
-
+Widget _buildListTile(
+  BuildContext context,
+  IconData icon,
+  String title,
+  ColorScheme colorScheme,
+) {
   return ListTile(
-    leading: Icon(icon, color: colors.onPrimary),
+    leading: Icon(icon, color: colorScheme.onPrimary),
     title: Text(
       title,
-      style: TextStyle(fontWeight: FontWeight.w500, color: colors.onPrimary),
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        color: colorScheme.onPrimary,
+      ),
     ),
-    trailing: Icon(Icons.chevron_right, color: colors.onPrimary),
+    trailing: Icon(Icons.chevron_right, color: colorScheme.onPrimary),
     onTap: () {},
   );
 }
 
-Widget _divider() {
-  return const Divider(height: 1, indent: 16, endIndent: 16);
+Widget _divider(ColorScheme colorScheme) {
+  return Divider(
+    height: 1,
+    indent: 16,
+    endIndent: 16,
+    // ignore: deprecated_member_use
+    color: colorScheme.onPrimary.withOpacity(0.3),
+  );
 }

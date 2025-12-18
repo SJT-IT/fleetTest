@@ -6,7 +6,8 @@ import 'package:test_case/features/auth/presentation/home.dart';
 import 'package:test_case/features/auth/presentation/login.dart';
 import 'package:test_case/features/auth/presentation/profile.dart';
 import 'package:test_case/features/auth/presentation/signup.dart';
-import 'package:test_case/wrapper.dart'; // <-- Role-based wrapper
+import 'package:test_case/wrapper.dart';
+import 'package:test_case/core/theme/app_colors.dart'; // <-- Import the color palette
 
 // ----------------------
 // THEME PROVIDER
@@ -43,22 +44,100 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
+    // ----------------------
+    // LIGHT THEME
+    // ----------------------
+    final lightTheme = ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: ColorScheme(
+        brightness: Brightness.light,
+        primary: AppColors.primary,
+        onPrimary: AppColors.onPrimary,
+        primaryContainer: AppColors.primaryVariant,
+        secondary: AppColors.secondary,
+        onSecondary: AppColors.onSecondary,
+        secondaryContainer: AppColors.secondaryVariant,
+        surface: AppColors.surface,
+        onSurface: AppColors.onSurface,
+        error: Colors.redAccent,
+        onError: Colors.white,
+      ),
+      scaffoldBackgroundColor: AppColors.background,
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.onPrimary,
+        elevation: 0,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.onPrimary,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(foregroundColor: AppColors.primary),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.all(AppColors.secondary),
+        // ignore: deprecated_member_use
+        trackColor: WidgetStateProperty.all(
+          // ignore: deprecated_member_use
+          AppColors.secondary.withOpacity(0.5),
+        ),
+      ),
+    );
+
+    // ----------------------
+    // DARK THEME
+    // ----------------------
+    final darkTheme = ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorScheme: ColorScheme(
+        brightness: Brightness.dark,
+        primary: AppColors.primary,
+        onPrimary: AppColors.onPrimary,
+        primaryContainer: AppColors.primaryVariant,
+        secondary: AppColors.secondary,
+        onSecondary: AppColors.onSecondary,
+        secondaryContainer: AppColors.secondaryVariant,
+        surface: AppColors.darkSurface,
+        onSurface: AppColors.onDarkSurface,
+        error: Colors.redAccent,
+        onError: Colors.white,
+      ),
+      scaffoldBackgroundColor: AppColors.darkBackground,
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.darkSurface,
+        foregroundColor: AppColors.onDarkSurface,
+        elevation: 0,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.onPrimary,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(foregroundColor: AppColors.primary),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.all(AppColors.secondary),
+        // ignore: deprecated_member_use
+        trackColor: WidgetStateProperty.all(
+          // ignore: deprecated_member_use
+          AppColors.secondary.withOpacity(0.5),
+        ),
+      ),
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      // ----------------------
-      // DARK MODE ENABLED HERE
-      // ----------------------
       themeMode: themeProvider.themeMode,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black,
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
-      ),
-
+      theme: lightTheme,
+      darkTheme: darkTheme,
       home: const AuthGate(),
-
-      // Keep all your routes
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpScreen(),
@@ -90,8 +169,7 @@ class AuthGate extends StatelessWidget {
           return const LoginPage();
         }
 
-        // User is logged in -> route based on role
-        return const HomeWrapper(); // <-- NEW wrapper for role-based routing
+        return const HomeWrapper(); // role-based routing
       },
     );
   }

@@ -17,16 +17,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _signUp() async {
     if (passwordController.text.trim() != confirmController.text.trim()) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Passwords do not match")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Passwords do not match"),
+          backgroundColor: Theme.of(context).colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       return;
     }
 
     setState(() => _isLoading = true);
 
     try {
-      // Assign role 'driver' by default
       await authService.value.createAccount(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
@@ -37,9 +40,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Signup failed: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Signup failed: $e"),
+          backgroundColor: Theme.of(context).colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -55,8 +62,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -64,31 +74,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 64),
-              const Text(
+              Text(
                 'App Name',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: colorScheme.onSurface,
+                ),
               ),
               const SizedBox(height: 64),
-              const Text(
+              Text(
                 'Create an account',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: colorScheme.onSurface,
+                ),
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 'Enter your email to sign up for this app',
-                style: TextStyle(fontSize: 14),
+                style: TextStyle(
+                  fontSize: 14,
+                  // ignore: deprecated_member_use
+                  color: colorScheme.onSurface.withOpacity(0.7),
+                ),
               ),
               const SizedBox(height: 24),
 
-              // Email
+              // Email field
               TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(
                   hintText: "email@domain.com",
+                  filled: true,
+                  fillColor: colorScheme.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: colorScheme.primaryContainer),
                   ),
                 ),
+                style: TextStyle(color: colorScheme.onSurface),
               ),
               const SizedBox(height: 16),
 
@@ -98,10 +124,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "password",
+                  filled: true,
+                  fillColor: colorScheme.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: colorScheme.primaryContainer),
                   ),
                 ),
+                style: TextStyle(color: colorScheme.onSurface),
               ),
               const SizedBox(height: 16),
 
@@ -111,31 +141,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "confirm password",
+                  filled: true,
+                  fillColor: colorScheme.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: colorScheme.primaryContainer),
                   ),
                 ),
+                style: TextStyle(color: colorScheme.onSurface),
               ),
               const SizedBox(height: 24),
 
-              // Button
+              // Continue button
               SizedBox(
                 width: double.infinity,
                 height: 44,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _signUp,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: colorScheme.primary, // neutral main color
+                    foregroundColor: colorScheme.onPrimary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
                   ),
                   child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(
+                            colorScheme.onPrimary,
+                          ),
+                        )
                       : const Text("Continue"),
                 ),
               ),
-
               const SizedBox(height: 24),
             ],
           ),

@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
           Positioned(
             left: 16,
             right: 16,
-            bottom: 16,
+            bottom: -10,
             child: CustomNavBar(
               icon1: Icons.home,
               icon2: Icons.search,
