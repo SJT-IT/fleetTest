@@ -75,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               const SizedBox(height: 64),
               Text(
-                'App Name',
+                'App Name', // Your App's name here
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 decoration: InputDecoration(
                   hintText: "email@domain.com",
                   filled: true,
-                  fillColor: colorScheme.surface,
+                  fillColor: colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: colorScheme.primaryContainer),
@@ -118,14 +118,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Password
+              // Password field
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "password",
                   filled: true,
-                  fillColor: colorScheme.surface,
+                  fillColor: colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: colorScheme.primaryContainer),
@@ -135,14 +135,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Confirm Password
+              // Confirm Password field
               TextFormField(
                 controller: confirmController,
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "confirm password",
                   filled: true,
-                  fillColor: colorScheme.surface,
+                  fillColor: colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: colorScheme.primaryContainer),

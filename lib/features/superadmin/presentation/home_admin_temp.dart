@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             ), // Reserve space for floating navbar
             child: SafeArea(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 30),
 
                     // ------------------------------------------------
-                    // Dealerships
+                    // Dealerships Section
                     // ------------------------------------------------
                     SectionHeaderDual(
                       title: "Dealerships",
@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 25),
 
                     // ------------------------------------------------
-                    // Drivers
+                    // Drivers Section
                     // ------------------------------------------------
                     SectionHeaderWithSearch(
                       title: "Drivers",
@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 25),
 
                     // ------------------------------------------------
-                    // Vehicles
+                    // Vehicles Section
                     // ------------------------------------------------
                     SectionHeaderDual(
                       title: "Vehicles",
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 25),
 
                     // ------------------------------------------------
-                    // Complaints
+                    // Complaints Section
                     // ------------------------------------------------
                     SectionHeader(
                       title: "Complaints",
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 25),
 
                     // ------------------------------------------------
-                    // Super Admin Tools
+                    // Super Admin Tools Section
                     // ------------------------------------------------
                     Text(
                       "Super Admin Tools",
@@ -297,11 +297,12 @@ class _HomePageState extends State<HomePage> {
 // ================================================================
 // UI HELPERS
 // ================================================================
+
 BoxDecoration _boxStyle(BuildContext context) {
   final colors = Theme.of(context).colorScheme;
 
   return BoxDecoration(
-    color: colors.primary,
+    color: colors.surfaceContainerHighest, // Lighter surface background
     borderRadius: BorderRadius.circular(12),
   );
 }
@@ -329,23 +330,18 @@ Widget _adminTool(
         children: [
           Icon(icon, color: colors.onPrimary, size: 28),
           const SizedBox(height: 8),
-          Text(
-            label,
-            // ignore: deprecated_member_use
-            style: TextStyle(color: colors.onPrimary.withOpacity(0.7)),
-          ),
+          Text(label, style: TextStyle(color: colors.onPrimary.withAlpha(7))),
         ],
       ),
     ),
   );
 }
 
-//
-// ─────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────────────────────
 // REUSABLE WIDGETS
-// ─────────────────────────────────────────────
-//
+// ───────────────────────────────────────────────────────────────────────────────
 
+// Summary Card
 class SummaryCard extends StatelessWidget {
   final String label;
   final String value;
@@ -502,7 +498,7 @@ class SectionHeaderWithSearch extends StatelessWidget {
             prefixIcon: Icon(Icons.search, color: colors.onSurface),
             hintText: "Search drivers...",
             // ignore: deprecated_member_use
-            hintStyle: TextStyle(color: colors.onSurface.withOpacity(0.5)),
+            hintStyle: TextStyle(color: colors.onPrimary.withOpacity(0.5)),
             filled: true,
             fillColor: colors.primary,
             border: OutlineInputBorder(

@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
             ), // Reserve space for floating navbar
             child: SafeArea(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -227,30 +227,30 @@ class _HomePageState extends State<HomePage> {
 // ================================================================
 // Reusable Styles & Widgets
 // ================================================================
+
 BoxDecoration _boxStyle(BuildContext context) {
   final colors = Theme.of(context).colorScheme;
 
   return BoxDecoration(
-    color: colors.primary,
+    color: colors.surface, // Use surface color for card background
     borderRadius: BorderRadius.circular(12),
+    boxShadow: [
+      BoxShadow(
+        color: colors.onSurface.withAlpha(1),
+        offset: const Offset(0, 2),
+        blurRadius: 4,
+      ),
+    ],
   );
 }
 
 TextStyle _titleStyle(BuildContext context, {double size = 20}) {
-  final colors = Theme.of(context).colorScheme;
-
-  return TextStyle(
-    color: colors.onPrimary,
-    fontSize: size,
-    fontWeight: FontWeight.bold,
-  );
+  return TextStyle(fontSize: size, fontWeight: FontWeight.bold);
 }
 
 TextStyle _subtitleStyle(BuildContext context) {
-  final colors = Theme.of(context).colorScheme;
-
-  // ignore: deprecated_member_use
-  return TextStyle(color: colors.onPrimary.withOpacity(0.7), fontSize: 16);
+  // Ensure text colors adapt to the theme
+  return TextStyle(fontSize: 16);
 }
 
 Widget _infoCard(
@@ -258,8 +258,6 @@ Widget _infoCard(
   required String title,
   required List<Widget> children,
 }) {
-  final colors = Theme.of(context).colorScheme;
-
   return Container(
     width: double.infinity,
     padding: const EdgeInsets.all(16),
@@ -269,12 +267,7 @@ Widget _infoCard(
       children: [
         Text(
           title,
-          style: TextStyle(
-            // ignore: deprecated_member_use
-            color: colors.onPrimary.withOpacity(0.7),
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 10),
         ...children,
@@ -288,23 +281,17 @@ Widget _quickActionButton(
   required IconData icon,
   required String label,
 }) {
-  final colors = Theme.of(context).colorScheme;
-
   return Container(
     width: 100,
     padding: const EdgeInsets.symmetric(vertical: 14),
     decoration: _boxStyle(context),
     child: Column(
       children: [
-        Icon(icon, color: colors.onPrimary),
+        Icon(icon),
         const SizedBox(height: 6),
         Text(
           label,
-          style: TextStyle(
-            // ignore: deprecated_member_use
-            color: colors.onPrimary.withOpacity(0.7),
-            fontSize: 12,
-          ),
+          style: TextStyle(fontSize: 12),
           textAlign: TextAlign.center,
         ),
       ],
@@ -323,21 +310,14 @@ class _StatBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
     return Column(
       children: [
         Text(
           number.toString(),
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: colors.onPrimary,
-          ),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 4),
-        // ignore: deprecated_member_use
-        Text(label, style: TextStyle(color: colors.onPrimary.withOpacity(0.7))),
+        Text(label),
       ],
     );
   }

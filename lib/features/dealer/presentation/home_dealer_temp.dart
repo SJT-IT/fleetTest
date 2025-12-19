@@ -26,18 +26,14 @@ class _HomePageState extends State<HomePage> {
         children: [
           // Main content
           Padding(
-            padding: const EdgeInsets.only(
-              bottom: 80,
-            ), // Reserve space for floating navbar
+            padding: const EdgeInsets.only(bottom: 80),
             child: SafeArea(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ------------------------------------------------
                     // Header
-                    // ------------------------------------------------
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -76,12 +72,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 20),
 
-                    // ------------------------------------------------
                     // Summary Cards
-                    // ------------------------------------------------
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
@@ -102,12 +95,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 30),
 
-                    // ------------------------------------------------
-                    // Driver List
-                    // ------------------------------------------------
+                    // Driver List Section
                     SectionHeader(
                       title: "Driver List",
                       filterValue: driverFilter,
@@ -118,9 +108,7 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 25),
 
-                    // ------------------------------------------------
-                    // Vehicle List
-                    // ------------------------------------------------
+                    // Vehicle List Section
                     SectionHeader(
                       title: "Vehicle List",
                       filterValue: vehicleFilter,
@@ -131,9 +119,7 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 25),
 
-                    // ------------------------------------------------
-                    // Complaints
-                    // ------------------------------------------------
+                    // Complaints Section
                     SectionHeader(
                       title: "Complaints",
                       filterValue: complaintFilter,
@@ -144,9 +130,7 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 25),
 
-                    // ------------------------------------------------
                     // Quick Actions
-                    // ------------------------------------------------
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -197,21 +181,17 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// ================================================================
-// Reusable Box Style
-// ================================================================
+// Helper function to style containers
 BoxDecoration _boxStyle(BuildContext context) {
   final colors = Theme.of(context).colorScheme;
 
   return BoxDecoration(
-    color: colors.primary,
+    color: colors.surfaceContainerHighest, // Light surface background
     borderRadius: BorderRadius.circular(12),
   );
 }
 
-// ================================================================
-// Lists
-// ================================================================
+// Helper for the driver list
 Widget _driverList(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(16),
@@ -226,6 +206,7 @@ Widget _driverList(BuildContext context) {
   );
 }
 
+// Helper for the vehicle list
 Widget _vehicleList(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(16),
@@ -240,6 +221,7 @@ Widget _vehicleList(BuildContext context) {
   );
 }
 
+// Helper for the complaints list
 Widget _complaintsList(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(16),
@@ -254,9 +236,7 @@ Widget _complaintsList(BuildContext context) {
   );
 }
 
-// ================================================================
-// Quick Action
-// ================================================================
+// Helper for the quick action buttons
 Widget _quickAction(
   BuildContext context, {
   required IconData icon,
@@ -264,8 +244,6 @@ Widget _quickAction(
 }) {
   final colors = Theme.of(context).colorScheme;
 
-  // ignore: deprecated_member_use
-  var withOpacity = colors.onPrimary.withOpacity(0.7);
   return Container(
     width: 150,
     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -274,20 +252,17 @@ Widget _quickAction(
       children: [
         Icon(icon, color: colors.onPrimary),
         const SizedBox(height: 6),
-        Text(
-          label,
-          // ignore: deprecated_member_use
-          style: TextStyle(color: withOpacity),
-        ),
+        Text(label, style: TextStyle(color: colors.onPrimary.withAlpha(7))),
       ],
     ),
   );
 }
 
-// ──────────────────────────────────────────────────────────────
+// ================================================================
 // REUSABLE WIDGETS
-// ──────────────────────────────────────────────────────────────
+// ================================================================
 
+// Summary Card
 class SummaryCard extends StatelessWidget {
   final String label;
   final String value;
@@ -328,7 +303,7 @@ class SummaryCard extends StatelessWidget {
             label,
             style: TextStyle(
               // ignore: deprecated_member_use
-              color: colors.onPrimary.withOpacity(0.7),
+              color: colors.onPrimary.withAlpha(7),
               fontSize: 12,
             ),
             textAlign: TextAlign.center,
@@ -339,6 +314,7 @@ class SummaryCard extends StatelessWidget {
   }
 }
 
+// Section Header Widget (with filter dropdown)
 class SectionHeader extends StatelessWidget {
   final String title;
   final String filterValue;
@@ -360,37 +336,43 @@ class SectionHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: colors.onSurface,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            color: colors.secondary,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: DropdownButton<String>(
-            value: filterValue,
-            underline: const SizedBox(),
-            dropdownColor: colors.surface,
-            icon: Icon(Icons.arrow_drop_down, color: colors.onSurface),
-            style: TextStyle(color: colors.onSurface),
-            items: items
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: onChanged,
-          ),
-        ),
+        Text(title, style: TextStyle(color: colors.onSurface, fontSize: 18)),
+        _dropdown(context, filterValue, items, onChanged),
       ],
     );
   }
 }
 
+// Dropdown helper function
+Widget _dropdown(
+  BuildContext context,
+  String value,
+  List<String> items,
+  ValueChanged<String?> onChanged,
+) {
+  final colors = Theme.of(context).colorScheme;
+
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    decoration: BoxDecoration(
+      color: colors.secondary,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: DropdownButton<String>(
+      value: value,
+      underline: const SizedBox(),
+      dropdownColor: colors.surface,
+      icon: Icon(Icons.arrow_drop_down, color: colors.onSurface),
+      style: TextStyle(color: colors.onSurface),
+      items: items
+          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+          .toList(),
+      onChanged: onChanged,
+    ),
+  );
+}
+
+// Driver Row Widget
 class DriverRow extends StatelessWidget {
   final String name;
   final String status;
@@ -402,17 +384,22 @@ class DriverRow extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return ListTile(
-      leading: Icon(Icons.person, color: colors.onSurface),
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        Icons.circle,
+        size: 12,
+        color: colors.onSurface.withAlpha(6),
+      ),
       title: Text(name, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
         status,
-        // ignore: deprecated_member_use
-        style: TextStyle(color: colors.onSurface.withOpacity(0.7)),
+        style: TextStyle(color: colors.onSurface.withAlpha(7)),
       ),
     );
   }
 }
 
+// Vehicle Row Widget
 class VehicleRow extends StatelessWidget {
   final String model;
   final String status;
@@ -424,20 +411,22 @@ class VehicleRow extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return ListTile(
-      leading: Icon(Icons.local_shipping, color: colors.onSurface),
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        Icons.circle,
+        size: 12,
+        color: colors.onSurface.withAlpha(6),
+      ),
       title: Text(model, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
         status,
-        style: TextStyle(
-          color: status == "Maintenance"
-              ? Colors.redAccent
-              : Colors.greenAccent,
-        ),
+        style: TextStyle(color: colors.onSurface.withAlpha(7)),
       ),
     );
   }
 }
 
+// Complaint Row Widget
 class ComplaintRow extends StatelessWidget {
   final String issue;
   final String priority;
@@ -448,18 +437,17 @@ class ComplaintRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    final Color priorityColor = priority == "High"
-        ? Colors.redAccent
-        : priority == "Medium"
-        ? Colors.orangeAccent
-        : Colors.greenAccent;
-
     return ListTile(
-      leading: Icon(Icons.warning, color: colors.onSurface),
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        Icons.circle,
+        size: 12,
+        color: colors.onSurface.withAlpha(6),
+      ),
       title: Text(issue, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
-        "Priority: $priority",
-        style: TextStyle(color: priorityColor),
+        priority,
+        style: TextStyle(color: colors.onSurface.withAlpha(7)),
       ),
     );
   }

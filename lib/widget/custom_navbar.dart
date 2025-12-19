@@ -26,32 +26,40 @@ class CustomNavBar extends StatelessWidget {
     this.selectedIndex = 1,
   });
 
-  BoxShadow? getShadowForIndex(int index) {
+  BoxShadow? getShadowForIndex(int index, bool isDark) {
     switch (index) {
       case 1:
         return BoxShadow(
-          color: Colors.blue.shade200.withAlpha((0.4 * 255).round()),
+          color: Colors.blue.shade200.withAlpha(
+            ((isDark ? 0.25 : 0.4) * 255).round(),
+          ),
           blurRadius: 12,
           spreadRadius: 2,
           offset: const Offset(0, 4),
         );
       case 2:
         return BoxShadow(
-          color: Colors.orange.shade200.withAlpha((0.4 * 255).round()),
+          color: Colors.orange.shade200.withAlpha(
+            ((isDark ? 0.25 : 0.4) * 255).round(),
+          ),
           blurRadius: 12,
           spreadRadius: 2,
           offset: const Offset(0, 4),
         );
       case 3:
         return BoxShadow(
-          color: Colors.purple.shade200.withAlpha((0.4 * 255).round()),
+          color: Colors.purple.shade200.withAlpha(
+            ((isDark ? 0.25 : 0.4) * 255).round(),
+          ),
           blurRadius: 12,
           spreadRadius: 2,
           offset: const Offset(0, 4),
         );
       case 4:
         return BoxShadow(
-          color: Colors.green.shade200.withAlpha((0.4 * 255).round()),
+          color: Colors.green.shade200.withAlpha(
+            ((isDark ? 0.25 : 0.4) * 255).round(),
+          ),
           blurRadius: 12,
           spreadRadius: 2,
           offset: const Offset(0, 4),
@@ -61,7 +69,12 @@ class CustomNavBar extends StatelessWidget {
     }
   }
 
-  Widget _buildIcon(IconData icon, VoidCallback onTap, bool isSelected) {
+  Widget _buildIcon(
+    IconData icon,
+    VoidCallback onTap,
+    bool isSelected,
+    bool isDark,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -69,13 +82,17 @@ class CustomNavBar extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: isSelected
-              ? Colors.green.shade100.withAlpha((0.3 * 255).round())
+              ? (isDark
+                    ? Colors.green.shade800.withAlpha((0.3 * 255).round())
+                    : Colors.green.shade100.withAlpha((0.3 * 255).round()))
               : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: Colors.green.shade200.withAlpha((0.6 * 255).round()),
+                    color: isDark
+                        ? Colors.green.shade900.withAlpha((0.6 * 255).round())
+                        : Colors.green.shade200.withAlpha((0.6 * 255).round()),
                     blurRadius: 8,
                     spreadRadius: 1,
                   ),
@@ -84,8 +101,12 @@ class CustomNavBar extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          color: isSelected ? Colors.green.shade700 : Colors.black87,
           size: 20,
+          color: isSelected
+              ? Colors.green.shade400
+              : isDark
+              ? Colors.white70
+              : Colors.black87,
         ),
       ),
     );
@@ -93,23 +114,27 @@ class CustomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shadow = getShadowForIndex(selectedIndex);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final shadow = getShadowForIndex(selectedIndex, isDark);
+    final alpha = (0.9 * 255).round();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark
+            ? Colors.grey.shade900.withAlpha(alpha)
+            : Colors.grey.shade50.withAlpha(alpha),
+
         borderRadius: BorderRadius.circular(40),
         boxShadow: shadow != null ? [shadow] : [],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildIcon(icon1, onTap1, selectedIndex == 1),
-          _buildIcon(icon2, onTap2, selectedIndex == 2),
-          _buildIcon(icon3, onTap3, selectedIndex == 3),
-          _buildIcon(icon4, onTap4, selectedIndex == 4),
+          _buildIcon(icon1, onTap1, selectedIndex == 1, isDark),
+          _buildIcon(icon2, onTap2, selectedIndex == 2, isDark),
+          _buildIcon(icon3, onTap3, selectedIndex == 3, isDark),
+          _buildIcon(icon4, onTap4, selectedIndex == 4, isDark),
         ],
       ),
     );

@@ -66,13 +66,28 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // ------------------------------------------------
+                // App Title
+                // ------------------------------------------------
+                Text(
+                  "Welcome Back!",
+                  style: TextStyle(
+                    color: colorScheme.onSurface,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // ------------------------------------------------
                 // Email field
+                // ------------------------------------------------
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
                     hintText: 'Email',
                     filled: true,
-                    fillColor: colorScheme.surface,
+                    fillColor: colorScheme.surfaceContainerHighest,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
@@ -84,14 +99,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 16),
 
+                // ------------------------------------------------
                 // Password field
+                // ------------------------------------------------
                 TextFormField(
                   controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Password',
                     filled: true,
-                    fillColor: colorScheme.surface,
+                    fillColor: colorScheme.surfaceContainerHighest,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
@@ -103,7 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 24),
 
+                // ------------------------------------------------
                 // Login button
+                // ------------------------------------------------
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -122,19 +141,28 @@ class _LoginPageState extends State<LoginPage> {
                               colorScheme.onPrimary, // adapts to theme
                             ),
                           )
-                        : const Text('Continue'),
+                        : const Text('Login'),
                   ),
                 ),
 
                 const SizedBox(height: 16),
 
+                // ------------------------------------------------
                 // Sign up button
+                // ------------------------------------------------
                 TextButton(
                   onPressed: () => Navigator.pushNamed(context, '/signup'),
                   style: TextButton.styleFrom(
                     foregroundColor: colorScheme.primary, // accent or neutral
                   ),
-                  child: const Text('Sign Up'),
+                  child: Text(
+                    "Don't have an account? Sign Up",
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary, // Use onPrimary color from the theme
+                    ),
+                  ),
                 ),
               ],
             ),

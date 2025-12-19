@@ -86,6 +86,7 @@ class ProfilePage extends StatelessWidget {
 // ================================================================
 // LOGOUT CONFIRMATION
 // ================================================================
+
 void showLogoutConfirmation(
   BuildContext context,
   Function(BuildContext) signOut,
@@ -118,8 +119,7 @@ void showLogoutConfirmation(
               "Are you sure you want to log out?",
               style: TextStyle(
                 fontSize: 15,
-                // ignore: deprecated_member_use
-                color: colorScheme.onSurface.withOpacity(0.7),
+                color: colorScheme.onSurface.withAlpha(7),
               ),
             ),
             const SizedBox(height: 28),
@@ -168,6 +168,7 @@ void showLogoutConfirmation(
 // ================================================================
 // PROFILE BODY
 // ================================================================
+
 Widget _buildProfileStack(
   BuildContext context,
   Function(BuildContext) signOut,
@@ -198,24 +199,14 @@ Widget _buildProfileStack(
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: colorScheme.onPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      "Welcome to California",
-                      style: TextStyle(
-                        // ignore: deprecated_member_use
-                        color: colorScheme.onPrimary.withOpacity(0.7),
-                      ),
-                    ),
+                    Text("Welcome to California", style: TextStyle()),
                   ],
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.edit, color: colorScheme.onPrimary),
-                onPressed: () {},
-              ),
+              IconButton(icon: Icon(Icons.edit), onPressed: () {}),
             ],
           ),
         ),
@@ -229,13 +220,10 @@ Widget _buildProfileStack(
           child: Column(
             children: [
               ListTile(
-                leading: Icon(Icons.dark_mode, color: colorScheme.onPrimary),
+                leading: Icon(Icons.dark_mode),
                 title: Text(
                   "Dark Mode",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: colorScheme.onPrimary,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w500),
                 ),
                 trailing: Switch(
                   value: Provider.of<ThemeProvider>(context).isDarkMode,
@@ -329,12 +317,20 @@ Widget _buildProfileStack(
 // ================================================================
 // HELPERS
 // ================================================================
+
 BoxDecoration _cardStyle(BuildContext context) {
   final colorScheme = Theme.of(context).colorScheme;
 
   return BoxDecoration(
-    color: colorScheme.primary,
+    color: colorScheme.surface, // Use surface instead of primary for cards
     borderRadius: BorderRadius.circular(16),
+    boxShadow: [
+      BoxShadow(
+        color: colorScheme.onSurface.withAlpha(1),
+        offset: const Offset(0, 2),
+        blurRadius: 4,
+      ),
+    ],
   );
 }
 
@@ -345,14 +341,8 @@ Widget _buildListTile(
   ColorScheme colorScheme,
 ) {
   return ListTile(
-    leading: Icon(icon, color: colorScheme.onPrimary),
-    title: Text(
-      title,
-      style: TextStyle(
-        fontWeight: FontWeight.w500,
-        color: colorScheme.onPrimary,
-      ),
-    ),
+    leading: Icon(icon),
+    title: Text(title, style: TextStyle(fontWeight: FontWeight.w500)),
     trailing: Icon(Icons.chevron_right, color: colorScheme.onPrimary),
     onTap: () {},
   );
@@ -363,7 +353,6 @@ Widget _divider(ColorScheme colorScheme) {
     height: 1,
     indent: 16,
     endIndent: 16,
-    // ignore: deprecated_member_use
-    color: colorScheme.onPrimary.withOpacity(0.3),
+    color: colorScheme.onSurface.withAlpha(3),
   );
 }
