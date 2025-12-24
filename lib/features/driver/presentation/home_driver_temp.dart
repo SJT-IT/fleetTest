@@ -236,7 +236,7 @@ BoxDecoration _boxStyle(BuildContext context) {
     borderRadius: BorderRadius.circular(12),
     boxShadow: [
       BoxShadow(
-        color: colors.onSurface.withAlpha(1),
+        color: colors.onSurface.withAlpha(26),
         offset: const Offset(0, 2),
         blurRadius: 4,
       ),

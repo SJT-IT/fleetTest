@@ -252,7 +252,7 @@ Widget _quickAction(
       children: [
         Icon(icon, color: colors.onPrimary),
         const SizedBox(height: 6),
-        Text(label, style: TextStyle(color: colors.onPrimary.withAlpha(7))),
+        Text(label, style: TextStyle(color: colors.onPrimary.withAlpha(180))),
       ],
     ),
   );
@@ -303,7 +303,7 @@ class SummaryCard extends StatelessWidget {
             label,
             style: TextStyle(
               // ignore: deprecated_member_use
-              color: colors.onPrimary.withAlpha(7),
+              color: colors.onPrimary.withAlpha(180),
               fontSize: 12,
             ),
             textAlign: TextAlign.center,
@@ -388,12 +388,12 @@ class DriverRow extends StatelessWidget {
       leading: Icon(
         Icons.circle,
         size: 12,
-        color: colors.onSurface.withAlpha(6),
+        color: colors.onSurface.withAlpha(153),
       ),
       title: Text(name, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
         status,
-        style: TextStyle(color: colors.onSurface.withAlpha(7)),
+        style: TextStyle(color: colors.onSurface.withAlpha(180)),
       ),
     );
   }
@@ -415,12 +415,12 @@ class VehicleRow extends StatelessWidget {
       leading: Icon(
         Icons.circle,
         size: 12,
-        color: colors.onSurface.withAlpha(6),
+        color: colors.onSurface.withAlpha(153),
       ),
       title: Text(model, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
         status,
-        style: TextStyle(color: colors.onSurface.withAlpha(7)),
+        style: TextStyle(color: colors.onSurface.withAlpha(180)),
       ),
     );
   }
@@ -442,12 +442,12 @@ class ComplaintRow extends StatelessWidget {
       leading: Icon(
         Icons.circle,
         size: 12,
-        color: colors.onSurface.withAlpha(6),
+        color: colors.onSurface.withAlpha(153),
       ),
       title: Text(issue, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
         priority,
-        style: TextStyle(color: colors.onSurface.withAlpha(7)),
+        style: TextStyle(color: colors.onSurface.withAlpha(180)),
       ),
     );
   }

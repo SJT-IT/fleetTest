@@ -330,7 +330,7 @@ Widget _adminTool(
         children: [
           Icon(icon, color: colors.onPrimary, size: 28),
           const SizedBox(height: 8),
-          Text(label, style: TextStyle(color: colors.onPrimary.withAlpha(7))),
+          Text(label, style: TextStyle(color: colors.onPrimary.withAlpha(180))),
         ],
       ),
     ),

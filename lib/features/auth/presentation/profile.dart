@@ -119,7 +119,7 @@ void showLogoutConfirmation(
               "Are you sure you want to log out?",
               style: TextStyle(
                 fontSize: 15,
-                color: colorScheme.onSurface.withAlpha(7),
+                color: colorScheme.onSurface.withAlpha(180),
               ),
             ),
             const SizedBox(height: 28),
@@ -326,7 +326,7 @@ BoxDecoration _cardStyle(BuildContext context) {
     borderRadius: BorderRadius.circular(16),
     boxShadow: [
       BoxShadow(
-        color: colorScheme.onSurface.withAlpha(1),
+        color: colorScheme.onSurface.withAlpha(26),
         offset: const Offset(0, 2),
         blurRadius: 4,
       ),
@@ -353,6 +353,6 @@ Widget _divider(ColorScheme colorScheme) {
     height: 1,
     indent: 16,
     endIndent: 16,
-    color: colorScheme.onSurface.withAlpha(3),
+    color: colorScheme.onSurface.withAlpha(77),
   );
 }
