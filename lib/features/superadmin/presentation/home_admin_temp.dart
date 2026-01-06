@@ -493,9 +493,9 @@ class SectionHeaderWithSearch extends StatelessWidget {
         Text(title, style: TextStyle(color: colors.onSurface, fontSize: 18)),
         const SizedBox(height: 12),
         TextField(
-          style: TextStyle(color: colors.onSurface),
+          style: TextStyle(color: colors.primaryContainer),
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: colors.onSurface),
+            prefixIcon: Icon(Icons.search, color: colors.secondary),
             hintText: "Search drivers...",
             // ignore: deprecated_member_use
             hintStyle: TextStyle(color: colors.onPrimary.withOpacity(0.5)),
@@ -503,7 +503,7 @@ class SectionHeaderWithSearch extends StatelessWidget {
             fillColor: colors.primary,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+              borderSide: BorderSide(color: colors.onPrimary, width: 1.5),
             ),
           ),
           onChanged: onSearch,

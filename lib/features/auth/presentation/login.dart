@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .colorScheme
-                          .onPrimary, // Use onPrimary color from the theme
+                          .secondary, // Use onPrimary color from the theme
                     ),
                   ),
                 ),
