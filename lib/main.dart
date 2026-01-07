@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
         // ignore: deprecated_member_use
         trackColor: WidgetStateProperty.all(
           // ignore: deprecated_member_use
-          AppColors.secondary.withOpacity(0.5),
+          AppColors.secondary.withAlpha(128),
         ),
       ),
     );
@@ -127,7 +127,7 @@ class MyApp extends StatelessWidget {
         // ignore: deprecated_member_use
         trackColor: WidgetStateProperty.all(
           // ignore: deprecated_member_use
-          AppColors.secondary.withOpacity(0.5),
+          AppColors.secondary.withAlpha(128),
         ),
       ),
     );

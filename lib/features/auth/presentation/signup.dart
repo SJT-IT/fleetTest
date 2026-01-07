@@ -97,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: TextStyle(
                   fontSize: 14,
                   // ignore: deprecated_member_use
-                  color: colorScheme.onSurface.withOpacity(0.7),
+                  color: colorScheme.onSurface.withAlpha(179),
                 ),
               ),
               const SizedBox(height: 24),

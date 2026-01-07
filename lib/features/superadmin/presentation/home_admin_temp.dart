@@ -335,7 +335,7 @@ Widget _adminTool(
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha(13),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -350,7 +350,7 @@ Widget _adminTool(
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: colors.primary.withOpacity(0.4),
+                    color: colors.primary.withAlpha(100),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -418,7 +418,7 @@ class SummaryCard extends StatelessWidget {
             label,
             style: TextStyle(
               // ignore: deprecated_member_use
-              color: colors.onPrimary.withOpacity(0.7),
+              color: colors.onPrimary.withAlpha(179),
               fontSize: 11,
             ),
             textAlign: TextAlign.center,
@@ -535,7 +535,7 @@ class SectionHeaderWithSearch extends StatelessWidget {
             prefixIcon: Icon(Icons.search, color: colors.secondary),
             hintText: "Search drivers...",
             // ignore: deprecated_member_use
-            hintStyle: TextStyle(color: colors.onPrimary.withOpacity(0.5)),
+            hintStyle: TextStyle(color: colors.onPrimary.withAlpha(128)),
             filled: true,
             fillColor: colors.primary,
             border: OutlineInputBorder(
