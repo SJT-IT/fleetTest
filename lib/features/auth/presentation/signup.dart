@@ -93,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Enter your email to sign up for this app',
+                'Enter your email to sign up',
                 style: TextStyle(
                   fontSize: 14,
                   // ignore: deprecated_member_use
@@ -105,6 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // Email field
               TextFormField(
                 controller: emailController,
+                cursorColor: colorScheme.onPrimary,
                 decoration: InputDecoration(
                   hintText: "email@domain.com",
                   filled: true,
@@ -121,6 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // Password field
               TextFormField(
                 controller: passwordController,
+                cursorColor: colorScheme.onPrimary,
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "password",
@@ -138,6 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // Confirm Password field
               TextFormField(
                 controller: confirmController,
+                cursorColor: colorScheme.onPrimary,
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "confirm password",
@@ -175,6 +178,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               const SizedBox(height: 24),
+              const SizedBox(height: 16),
+
+              // Already have an account? Login
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero, // so it doesn’t add extra padding
+                ),
+                child: RichText(
+                  text: TextSpan(
+                    text: "Already have an account? ",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Login",
+                        style: TextStyle(
+                          color: colorScheme.secondary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

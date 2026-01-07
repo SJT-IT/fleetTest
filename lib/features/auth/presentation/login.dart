@@ -84,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 // ------------------------------------------------
                 TextFormField(
                   controller: emailController,
+                  cursorColor: colorScheme.onPrimary, // now visible
                   decoration: InputDecoration(
                     hintText: 'Email',
                     filled: true,
@@ -104,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                 // ------------------------------------------------
                 TextFormField(
                   controller: passwordController,
+                  cursorColor: colorScheme.onPrimary,
                   obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Password',
