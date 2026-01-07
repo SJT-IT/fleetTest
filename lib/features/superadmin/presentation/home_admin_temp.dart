@@ -323,15 +323,52 @@ Widget _adminTool(
   final colors = Theme.of(context).colorScheme;
 
   return Expanded(
-    child: Container(
-      padding: const EdgeInsets.all(16),
-      decoration: _boxStyle(context),
-      child: Column(
-        children: [
-          Icon(icon, color: colors.onPrimary, size: 28),
-          const SizedBox(height: 8),
-          Text(label, style: TextStyle(color: colors.onPrimary.withAlpha(180))),
-        ],
+    child: InkWell(
+      onTap: () {
+        // You can add your onTap functionality here
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: colors.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: colors.primary,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: colors.primary.withOpacity(0.4),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Icon(icon, color: colors.onPrimary, size: 28),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: colors.onSurface,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );
@@ -565,14 +602,12 @@ class TableRowItem extends StatelessWidget {
       leading: Icon(
         Icons.circle,
         size: 12,
-        // ignore: deprecated_member_use
-        color: colors.onSurface.withOpacity(0.6),
+        color: colors.onSurface.withAlpha(153),
       ),
       title: Text(title, style: TextStyle(color: colors.onSurface)),
       subtitle: Text(
         subtitle,
-        // ignore: deprecated_member_use
-        style: TextStyle(color: colors.onSurface.withOpacity(0.7)),
+        style: TextStyle(color: colors.onSurface.withAlpha(179)),
       ),
     );
   }
