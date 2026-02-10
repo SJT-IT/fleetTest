@@ -274,7 +274,7 @@ class _HomePageState extends State<HomePage> {
               selectedIndex: selectedIndex,
               icon1: Icons.home,
               icon2: Icons.search,
-              icon3: Icons.favorite,
+              icon3: Icons.speed_outlined,
               icon4: Icons.person,
               onTap1: () => setState(() => selectedIndex = 1),
               onTap2: () => setState(() => selectedIndex = 2),

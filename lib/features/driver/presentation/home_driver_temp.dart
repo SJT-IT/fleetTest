@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
             child: CustomNavBar(
               icon1: Icons.home,
               icon2: Icons.search,
-              icon3: Icons.favorite,
+              icon3: Icons.speed_outlined,
               icon4: Icons.person,
               selectedIndex: selectedIndex,
               onTap1: () => setState(() => selectedIndex = 1),
