@@ -5,17 +5,26 @@ import 'package:test_case/widget/custom_navbar.dart';
 import 'package:test_case/wrapper.dart';
 import '../../../core/services/auth_service.dart';
 
-class ProfilePage extends StatelessWidget {
+// 1. Change to StatefulWidget
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+  
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+class _ProfilePageState extends State<ProfilePage> {
+  int selectedIndex = 4;
 
   void _signOut(BuildContext context) async {
     try {
       await authService.value.signOut();
-      if (!context.mounted) return;
+      if (!mounted) return; // Use 'mounted' directly in State classes
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
-      if (!context.mounted) return;
+      if (!mounted) return;
       ScaffoldMessenger.of(
+        // ignore: use_build_context_synchronously
         context,
       ).showSnackBar(SnackBar(content: Text('Error signing out: $e')));
     }
@@ -24,7 +33,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    int selectedIndex = 4;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,13 +43,11 @@ class ProfilePage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Main content
           Padding(
             padding: const EdgeInsets.only(bottom: 80),
             child: _buildProfileStack(context, _signOut),
           ),
 
-          // Floating CustomNavBar
           Positioned(
             left: 16,
             right: 16,
@@ -49,32 +55,20 @@ class ProfilePage extends StatelessWidget {
             child: CustomNavBar(
               icon1: Icons.home,
               icon2: Icons.search,
-              icon3: Icons.favorite,
+              icon3: Icons.speed_outlined,
               icon4: Icons.person,
               selectedIndex: selectedIndex,
               onTap1: () {
+                setState(() => selectedIndex = 1);
                 Navigator.pushAndRemoveUntil(
                   context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, _, _) => const HomeWrapper(),
-                    transitionsBuilder: (_, animation, _, child) {
-                      final tween = Tween(
-                        begin: const Offset(-1.0, 0.0),
-                        end: Offset.zero,
-                      ).chain(CurveTween(curve: Curves.easeInOut));
-
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
-                    },
-                  ),
-                  (route) => false,
+                  MaterialPageRoute(builder: (_) => const HomeWrapper()),
+                  (route) => false, // This clears the navigation stack
                 );
               },
-              onTap2: () {},
-              onTap3: () {},
-              onTap4: () {},
+              onTap2: () => setState(() => selectedIndex = 2),
+              onTap3: () => setState(() => selectedIndex = 3),
+              onTap4: () => setState(() => selectedIndex = 4),
             ),
           ),
         ],
@@ -82,7 +76,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
 // ================================================================
 // LOGOUT CONFIRMATION
 // ================================================================

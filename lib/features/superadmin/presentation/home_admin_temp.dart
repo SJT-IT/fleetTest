@@ -279,12 +279,15 @@ class _HomePageState extends State<HomePage> {
               onTap1: () => setState(() => selectedIndex = 1),
               onTap2: () => setState(() => selectedIndex = 2),
               onTap3: () => setState(() => selectedIndex = 3),
-              onTap4: () {
+              onTap4: () async {
                 setState(() => selectedIndex = 4);
-                Navigator.push(
+
+                // 2. Navigate to Profile
+                await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ProfilePage()),
                 );
+                setState(() => selectedIndex = 1);
               },
             ),
           ),
